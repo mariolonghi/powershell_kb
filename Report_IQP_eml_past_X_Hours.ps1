@@ -1,4 +1,4 @@
-  Start-Transcript -Path "G:\Scripts\Logs\LogForEEL\TranscriptDailyRun_IQP.txt" -Append
+Start-Transcript -Path "X:\patch\TranscriptDailyRun_IQP.txt" -Append
 function Get-TimeStamp {return "[{0:MM/dd/yy} {0:HH:mm:ss}]" -f (Get-Date)}
 
 Write-Host "$(Get-TimeStamp) Start of script by user $env:UserName on the server $env:computername."
@@ -10,17 +10,16 @@ $StartDate = (Get-date).AddHours(-25)
 $EndDate = (Get-date)
 
 
-Write-Host "$(Get-TimeStamp) Defined Stardate $StartDate and EndDate $EndDate"
-$outFile = "G:\Scripts\Logs\LogForEEL\LogOfDay" + $DateFormat + ".csv"
-#$outFile = "C:\temp\emlFiles\LogOfDay" + $DateFormat + ".csv"
+Write-Host "$(Get-TimeStamp) Defined Start date $StartDate and EndDate $EndDate"
+$outFile = "X:\Scripts\Logs\LogForEEL\LogOfDay" + $DateFormat + ".csv"
 Write-Host "$(Get-TimeStamp) Setting log file to $outfile"
 Write-Host "$(Get-TimeStamp) Reset the index"
 $indexNumber = 0
 $indexNumberIQPcases = 0
 Write-Host "$(Get-TimeStamp) The $indexNumber should be 0"
 
-$LogEELfolder = "G:\LogForEEL\Drop"
-#$LogEELfolder = "C:\temp\emlFiles\ShippingDocs"
+$LogEELfolder = "X:\path"
+
 
 Write-Host "$(Get-TimeStamp) Setting eml file folder to $logeelfolder"
 Write-Host "$(Get-TimeStamp) Setting the category specific folder to $CategoryFolder "
@@ -63,16 +62,11 @@ foreach ($filetoInspect in $AllFilesToInspect){
     $SenderContainer = $text | Where-Object {$_.Contains("x-sender: ")}
     $CategoryContainer = "EMPTY"
 	Write-Host "$(Get-TimeStamp) Loop $indexNumber - starting category for $($filetoInspect.FullName) "
-    if ($ReceiverContainer -like "*bp.restricted@infinet.infineum.com*"){ $CategoryContainer = "IQP111_BP"}
-    elseif ($ReceiverContainer -like "*iqp.openaccess@infinet.infineum.com"){ $CategoryContainer = "IQP111_General"}
-    elseif ($ReceiverContainer -like "*other.type4restricted@infinet.infineum.com"){ $CategoryContainer = "IQP111_OtherType4"}
-    elseif ($ReceiverContainer -like "*shell.restricted@infinet.infineum.com"){ $CategoryContainer = "IQP111_Shell"}
-    elseif ($ReceiverContainer -like "*shell.lcc.pcmo.restricted@infinet.infineum.com"){ $CategoryContainer = "IQP111_ShellLCCPCMO"}
-    elseif ($ReceiverContainer -like "*shell.lcc.tpeo.restricted@infinet.infineum.com"){ $CategoryContainer = "IQP111_ShellLCCTPEO"}
-    elseif ($ReceiverContainer -like "*exxonmobil.restricted@infinet.infineum.com"){ $CategoryContainer = "IQP111_XOM"}
-    elseif ($ReceiverContainer -like "*IQP111_FuelsCat5@infinet.infineum.com"){ $CategoryContainer = "IQP111_FuelsCat5"}
-	elseif ($ReceiverContainer -like "*IQP1.11Cat5@infinet.infineum.com"){ $CategoryContainer = "IQP111_FuelsCat5"}
-    else { $CategoryContainer = "Any_Other"}
+    if ($ReceiverContainer -like "*alias0@internal.domain.com*"){ $CategoryContainer = "ALIAS_0"}
+    elseif ($ReceiverContainer -like "*alias1@internal.domain.com"){ $CategoryContainer = "ALIAS_1"}
+    elseif ($ReceiverContainer -like "*alias2@internal.domain.com"){ $CategoryContainer = "ALIAS_2"}
+    elseif ($ReceiverContainer -like "*alias3@internal.domain.com){ $CategoryContainer = "ALIAS_3"}
+   else { $CategoryContainer = "Any_Other"}
     
     Write-Host "$(Get-TimeStamp) Loop $indexNumber - Running the IQP check"
     if ($CategoryContainer -like "IQP*"){
@@ -128,10 +122,10 @@ Write-Host "$(Get-TimeStamp) Calculated the elapsed time: $elapsedTime"
 
 #variables for the emailing function 
 Write-Host "$(Get-TimeStamp) Setting up email variables including body"
-$SmtpServer = "smtp.infineum.com"
-$MailFrom = "Mario.Longhi@infineum.com"
-$MailtToITAdmin	= "Mario.Longhi@infineum.com" 
-$MailtToIQPAdmin = "Brian.Jordan@infineum.com"
+$SmtpServer = "smtp.domain.com"
+$MailFrom = "email"
+$MailtToITAdmin	= "email admin" 
+$MailtToIQPAdmin = "email other admin"
 
 
 $BottomoutputArray += "These are all the senders in order (for easy copy/paste):<br>"
